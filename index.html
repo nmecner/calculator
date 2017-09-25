@@ -77,7 +77,27 @@
 
         button_value[i].addEventListener("click", function(){
             var currentValue = this.innerHTML;
-            myOutput.innerHTML = currentValue;
+
+
+            if (myOutput.innerHTML === ""){
+                if (currentValue != "=" ||currentValue != "/" ||currentValue != "*" ||currentValue != "+" ||currentValue != "-"){
+                    myOutput.innerHTML = currentValue;
+                }
+            } else {
+                if (currentValue == "="){
+                    return myOutput.innerHTML;
+
+                } else if (currentValue === "C"){
+                    myOutput.innerHTML === ''
+
+                } else
+                    {
+                    myOutput.innerHTML += currentValue;
+                }
+            }
+
+
+
 
             console.log("clicked");
         })
@@ -86,5 +106,5 @@
     </script>
 
 
-</body>
+</div></body>
 </html>
