@@ -8,15 +8,15 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
     <style>
-        #output{
+        #output {
             height: 45px;
-                background-color: black;
-                color: antiquewhite;
-                width: 100%;
-                font-size: 2em;
-                padding: 5px;
-                text-align: right;
-                margin-bottom: 5px;
+            background-color: black;
+            color: antiquewhite;
+            width: 100%;
+            font-size: 2em;
+            padding: 5px;
+            text-align: right;
+            margin-bottom: 5px;
         }
         .btn-primary {
             font-size: 2em;
@@ -24,13 +24,13 @@
             padding: 4px;
             width: 45px;
         }
-        .thecalculator{
+        .thecalculator {
             width: 350px;
             background-color: brown;
             height: 350px;
             padding: 25px;
         }
-        .container{
+        .container {
             padding: 25px
         }
     </style>
@@ -41,70 +41,86 @@
     <div class="thecalculator">
         <div id="output"></div>
 
-        <div class="col-xs-12>
-        <div class="btn-toolbar" role="toolbar" aria-label="fist line">
-        <button type="button" class="btn btn-primary">1</button>
-        <button type="button" class="btn btn-primary">2</button>
-        <button type="button" class="btn btn-primary">3</button>
-        <button type="button" class="btn btn-primary">+</button>
-        <button type="button" class="btn btn-primary">C</button>
-    <div class="col-xs-12>
-        <div class="btn-toolbar" role="toolbar" aria-label="second line">
-            <button type="button" class="btn btn-primary">4</button>
-            <button type="button" class="btn btn-primary">5</button>
-            <button type="button" class="btn btn-primary">6</button>
-            <button type="button" class="btn btn-primary">-</button>
-    <div class="col-xs-12>
+        <div class="col-xs-12">
+            <div class="btn-toolbar" role="toolbar" aria-label="first line">
+                <button type="button" class="btn btn-primary n-button-input">1</button>
+                <button type="button" class="btn btn-primary n-button-input">2</button>
+                <button type="button" class="btn btn-primary n-button-input">3</button>
+                <button type="button" class="btn btn-primary n-button-operation">+</button>
+                <button type="button" class="btn btn-primary n-button-clear">C</button>
+            </div>
+        </div>
+
+        <div class="col-xs-12">
+            <div class="btn-toolbar" role="toolbar" aria-label="second line">
+                <button type="button" class="btn btn-primary n-button-input">4</button>
+                <button type="button" class="btn btn-primary n-button-input">5</button>
+                <button type="button" class="btn btn-primary n-button-input">6</button>
+                <button type="button" class="btn btn-primary n-button-operation">-</button>
+            </div>
+        </div>
+        <div class="col-xs-12">
             <div class="btn-toolbar" role="toolbar" aria-label="third line">
-    <button type="button" class="btn btn-primary">7</button>
-    <button type="button" class="btn btn-primary">8</button>
-    <button type="button" class="btn btn-primary">9</button>
-    <button type="button" class="btn btn-primary">*</button>
-    <div class="col-xs-12>
+                <button type="button" class="btn btn-primary n-button-input">7</button>
+                <button type="button" class="btn btn-primary n-button-input">8</button>
+                <button type="button" class="btn btn-primary n-button-input">9</button>
+                <button type="button" class="btn btn-primary n-button-operation">*</button>
+            </div>
+        </div>
+
+        <div class="col-xs-12">
             <div class="btn-toolbar" role="toolbar" aria-label="fourth line">
-    <button type="button" class="btn btn-primary">0</button>
-    <button type="button" class="btn btn-primary">.</button>
-    <button type="button" class="btn btn-primary">=</button>
-    <button type="button" class="btn btn-primary">/</button>
-
-
+                <button type="button" class="btn btn-primary n-button-input">0</button>
+                <button type="button" class="btn btn-primary n-button-input">.</button>
+                <button type="button" class="btn btn-primary n-button-evaluate">=</button>
+                <button type="button" class="btn btn-primary n-button-operation">/</button>
+            </div>
+        </div>
+    </div>
 </div>
 
+
 <script>
-    var button_value = document.getElementsByClassName("btn-primary");
+    var inputButtons = document.getElementsByClassName("n-button-input");
+    var operationButtons = document.getElementsByClassName("n-button-operation");
+    var clearButton = document.getElementsByClassName("n-button-clear")[0];
+    var evalButton = document.getElementsByClassName("n-button-evaluate")[0];
     var myOutput = document.getElementById("output");
-    for(var i=0; i < button_value.length; i++) {
+ 
 
-        button_value[i].addEventListener("click", function(){
+    var previousWasOperation = false;
+
+
+    for (let el of inputButtons){
+        el.addEventListener("click", function(){
             var currentValue = this.innerHTML;
-
-
-            if (myOutput.innerHTML === ""){
-                if (currentValue != "=" ||currentValue != "/" ||currentValue != "*" ||currentValue != "+" ||currentValue != "-"){
-                    myOutput.innerHTML = currentValue;
-                }
-            } else {
-                if (currentValue == "="){
-                    return myOutput.innerHTML;
-
-                } else if (currentValue === "C"){
-                    myOutput.innerHTML === ''
-
-                } else
-                    {
-                    myOutput.innerHTML += currentValue;
-                }
-            }
-
-
-
-
-            console.log("clicked");
-        })
+            myOutput.innerHTML += currentValue;
+            previousWasOperation = false;
+        });
     }
 
-    </script>
+    for (let el of operationButtons){
+        el.addEventListener("click", function(){
+            var currentValue = this.innerHTML;
+            if (!previousWasOperation) {
+                myOutput.innerHTML += currentValue;
+                previousWasOperation = true;
+            }
+        });
+    }
 
 
-</div></body>
+    clearButton.addEventListener("click", function (){
+        myOutput.innerHTML = "";
+    });
+
+
+    evalButton.addEventListener("click", function(){
+        myOutput.innerHTML = eval(myOutput.innerHTML);
+    });
+
+</script>
+
+
+</body>
 </html>
