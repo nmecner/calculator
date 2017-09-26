@@ -17,6 +17,7 @@
             padding: 5px;
             text-align: right;
             margin-bottom: 5px;
+            overflow: hidden;
         }
         .btn-primary {
             font-size: 2em;
@@ -89,11 +90,13 @@
  
 
     var previousWasOperation = false;
+    var isOperatorUsed = false;
 
 
     for (let el of inputButtons){
         el.addEventListener("click", function(){
             var currentValue = this.innerHTML;
+
             myOutput.innerHTML += currentValue;
             previousWasOperation = false;
         });
@@ -102,10 +105,11 @@
     for (let el of operationButtons){
         el.addEventListener("click", function(){
             var currentValue = this.innerHTML;
-            if (!previousWasOperation) {
-                myOutput.innerHTML += currentValue;
-                previousWasOperation = true;
-            }
+                if (!previousWasOperation && !isOperatorUsed && myOutput.innerHTML !== '') {
+                    myOutput.innerHTML += currentValue;
+                    previousWasOperation = true;
+                    isOperatorUsed = true;
+                }
         });
     }
 
@@ -116,7 +120,10 @@
 
 
     evalButton.addEventListener("click", function(){
-        myOutput.innerHTML = eval(myOutput.innerHTML);
+        if (myOutput.innerHTML != '') {
+
+            myOutput.innerHTML = eval(myOutput.innerHTML);
+        }
     });
 
 </script>
