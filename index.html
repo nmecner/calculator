@@ -71,8 +71,8 @@
 
         <div class="col-xs-12">
             <div class="btn-toolbar" role="toolbar" aria-label="fourth line">
-                <button type="button" class="btn btn-primary n-button-input">0</button>
-                <button type="button" class="btn btn-primary n-button-input">.</button>
+                <button type="button" class="btn btn-primary n-button-zero">0</button>
+                <button type="button" class="btn btn-primary n-button-dot">.</button>
                 <button type="button" class="btn btn-primary n-button-evaluate">=</button>
                 <button type="button" class="btn btn-primary n-button-operation">/</button>
             </div>
@@ -85,12 +85,15 @@
     var inputButtons = document.getElementsByClassName("n-button-input");
     var operationButtons = document.getElementsByClassName("n-button-operation");
     var clearButton = document.getElementsByClassName("n-button-clear")[0];
+    var zeroButton = document.getElementsByClassName("n-button-zero")[0];
+    var dotButton = document.getElementsByClassName("n-button-dot")[0];
     var evalButton = document.getElementsByClassName("n-button-evaluate")[0];
     var myOutput = document.getElementById("output");
  
 
     var previousWasOperation = false;
     var isOperatorUsed = false;
+    var isNumberDecimal = false;
 
 
     for (let el of inputButtons){
@@ -109,13 +112,29 @@
                     myOutput.innerHTML += currentValue;
                     previousWasOperation = true;
                     isOperatorUsed = true;
+                    isNumberDecimal = false;
                 }
         });
     }
 
+    zeroButton.addEventListener("click", function (){
+        if (myOutput.innerHTML !== ''){
+            myOutput.innerHTML += this.innerHTML;
+        }
+    });
+
+    dotButton.addEventListener("click", function(){
+        if (!isNumberDecimal){
+            myOutput.innerHTML += this.innerHTML;
+            isNumberDecimal = true;
+        }
+    })
 
     clearButton.addEventListener("click", function (){
         myOutput.innerHTML = "";
+        isOperatorUsed = false;
+        previousWasOperation = false;
+        isNumberDecimal = false;
     });
 
 
@@ -123,6 +142,9 @@
         if (myOutput.innerHTML != '') {
 
             myOutput.innerHTML = eval(myOutput.innerHTML);
+            previousWasOperation = false;
+            isOperatorUsed = false;
+            isNumberDecimal = false;
         }
     });
 
